@@ -76,6 +76,11 @@ beginning and end of the list instead. For example:—
 $ clang -o myprog -nostartfiles /path/to/rtsu-init_d.o main.o utils.o /path/to/rtsu-fini_d.o
 ```
 
+Note that typically you will also need to inhibit the linking of the
+default C library (via `-nostdlib`) and link against Personality Kit
+instead. Generally using runtime start-up files which do not correspond
+to the C library in use will not work.
+
 ### Process initialisation
 
 The Runtime Start-up objects expect to be used in conjunction with Personality
@@ -87,12 +92,13 @@ On systems which are flexible with symbol naming,
 control on to the application-provided `main()`. On systems which do not
 have such flexible naming, the function will be named `__tal_main()` instead.
 
-If control is returned by `Talisker.PersonalityKit.__main()` to `start`, then
-a `hlt` instruction (or equivalent) will be issued to abort the process.
-Ordinarily, an `_exit()` system call will be invoked before that occurs.
-
 This function is provided by Personality Kit. A mock version is included in
 the `Tests` directory in order to minimise external dependencies.
+
+If control is returned by `Talisker.PersonalityKit.__main()` to `start`, then
+a call is made to `Talisker.PersonalityKit.Executive._exit()` to terminate the
+process, and if that returns for any reason a `hlt` instruction (or equivalent)
+will be issued to forcibly abort the process.
 
 ### Supported host types
 
