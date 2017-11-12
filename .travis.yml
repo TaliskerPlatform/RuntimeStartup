@@ -1,0 +1,11 @@
+language: c
+sudo: required
+dist: trusty
+compiler: clang
+group: deprecated-2017Q2
+before_install:
+- sudo apt-get install -qq build-essential clang binutils automake autoconf libtool pkg-config
+before_script:
+- autoreconf -f -i
+script:
+- ./configure --enable-native && make && make check
