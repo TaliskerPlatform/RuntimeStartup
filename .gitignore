@@ -7,7 +7,6 @@
 *.so
 *.a
 *.la
-*.in
 *.pc
 .deps
 .libs
@@ -19,6 +18,7 @@ Makefile.in
 /autom4te.cache
 /depcomp
 /config.h
+/config.h.in
 /config.status
 /config.cache
 /config.log

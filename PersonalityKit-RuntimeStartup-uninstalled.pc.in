@@ -1,0 +1,32 @@
+top_srcdir=@abs_top_srcdir@
+top_builddir=@abs_top_builddir@
+OBJEXT=@OBJEXT@
+
+pk_rtsu_cppflags_static=@pk_rtsu_cppflags_static@
+pk_rtsu_cppflags_dynamic=@pk_rtsu_cppflags_dynamic@
+pk_rtsu_ldflags_static=@pk_rtsu_ldflags_static@
+
+pk_rtsu_init_lo=@pk_rtsu_init_lo@
+pk_rtsu_fini_lo=@pk_rtsu_fini_lo@
+
+pk_rtsu_init_s=@pk_rtsu_init_s@
+pk_rtsu_fini_s=@pk_rtsu_fini_s@
+
+pk_rtsu_init_d=@pk_rtsu_init_d@
+pk_rtsu_fini_d=@pk_rtsu_fini_d@
+
+pk_rtsu_init_p=@pk_rtsu_init_p@
+pk_rtsu_fini_p=@pk_rtsu_fini_p@
+
+pk_rtsu_init_s_debug=@pk_rtsu_init_s_debug@
+pk_rtsu_fini_s_debug=@pk_rtsu_fini_s_debug@
+
+pk_rtsu_init_d_debug=@pk_rtsu_init_d_debug@
+pk_rtsu_fini_d_debug=@pk_rtsu_fini_d_debug@
+
+pk_rtsu_init_p_debug=@pk_rtsu_init_p_debug@
+pk_rtsu_fini_p_debug=@pk_rtsu_fini_p_debug@
+
+Name: Talisker::PersonalityKit::RuntimeStartup
+Description: Talisker Personality Kit Runtime Start-up (uninstalled)
+Version: @VERSION@

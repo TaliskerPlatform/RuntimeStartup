@@ -48,15 +48,47 @@ if test x"$native" = x"yes" ; then
 		pk_rtsu_cppflags_static="-ffreestanding -static"
 		pk_rtsu_cppflags_dynamic="-ffreestanding"
 	fi
+	pk_rtsu_ldflags="-nostartfiles -nodefaultlibs"
+	pk_rtsu_ldflags_static="${pk_rtsu_ldflags} -static"
 	case "$host_platform" in
-		linux)
-			tests_ldflags="-static -nostartfiles -nodefaultlibs"
-			;;
 		darwin)
-			tests_ldflags="-static -nostartfiles -nodefaultlibs -Wl,-static"
+			pk_rtsu_ldflags_static="${pk_rtsu_ldflags} -static -Wl,-static"
 			;;
 	esac
+	tests_ldflags="$pk_rtsu_ldflags_static"
+	m4_foreach([objsuffix],[[],_debug,_profile],[
+		m4_foreach([objtype],[s,d,p],[
+			AS_VAR_SET([pk_rtsu_init_]objtype[]objsuffix,["$arch_dir/rtsu-init-]objtype[]objsuffix[.o"])
+			AS_VAR_SET([pk_rtsu_fini_]objtype[]objsuffix,["$arch_dir/rtsu-fini-]objtype[]objsuffix[.o"])
+		])
+	])
+	for file in crt0 crt1 crtbegin ; do
+		if test -f ${srcdir}/${arch_dir}/${file}.S ; then
+			AS_VAR_SET([pk_rtsu_init_lo],["${pk_rtsu_init_lo} $arch_dir/$file.lo]")
+		fi
+	done
+	for file in crtend crtn ; do
+		if test -f ${srcdir}/${arch_dir}/${file}.S ; then
+			AS_VAR_SET([pk_rtsu_fini_lo],["${pk_rtsu_fini_lo} $arch_dir/$file.lo]")
+		fi
+	done
+	AS_VAR_SET([pk_rtsu_libs_la],["${arch_dir}/librtsu.la"])
 fi
+
+AC_SUBST([pk_rtsu_init_lo])
+AC_SUBST([pk_rtsu_fini_lo])
+AC_SUBST([pk_rtsu_libs_la])
+m4_foreach([objsuffix],[[],_debug,_profile],[
+	m4_foreach([objtype],[s,d,p],[
+		AC_SUBST([pk_rtsu_init_]objtype[]objsuffix)
+		AC_SUBST([pk_rtsu_fini_]objtype[]objsuffix)
+	])
+])
+
+RTSU_SUBST_BUILDFLAG([pk_rtsu_cppflags_static],[preprocessor flags for building static executables with this framework])
+RTSU_SUBST_BUILDFLAG([pk_rtsu_cppflags_dynamic],[preprocessor flags for building dynamic executables with this framework])
+RTSU_SUBST_BUILDFLAG([pk_rtsu_ldflags_static],[linker flags for building static executables with this framework])
+
 RTSU_SUBST_BUILDFLAG([tests_cppflags],[unit test preprocessor flags])
 RTSU_SUBST_BUILDFLAG([tests_ldflags],[unit test linker flags])
 RTSU_SUBST_BUILDFLAG([tests_libs],[unit test libraries])
